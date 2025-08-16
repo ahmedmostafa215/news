@@ -85,4 +85,13 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get load_more => 'Load More';
+
+  @override
+  String get view_full_article => 'View Full Article';
+
+  @override
+  String get no_url_available => 'No URL Available';
+
+  @override
+  String get could_not_launch => 'Could Not Launch';
 }

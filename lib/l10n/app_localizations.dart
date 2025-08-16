@@ -253,6 +253,24 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Load More'**
   String get load_more;
+
+  /// No description provided for @view_full_article.
+  ///
+  /// In en, this message translates to:
+  /// **'View Full Article'**
+  String get view_full_article;
+
+  /// No description provided for @no_url_available.
+  ///
+  /// In en, this message translates to:
+  /// **'No URL Available'**
+  String get no_url_available;
+
+  /// No description provided for @could_not_launch.
+  ///
+  /// In en, this message translates to:
+  /// **'Could Not Launch'**
+  String get could_not_launch;
 }
 
 class _AppLocalizationsDelegate

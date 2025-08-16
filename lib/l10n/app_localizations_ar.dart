@@ -85,4 +85,13 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get load_more => 'اظهر المزيد';
+
+  @override
+  String get view_full_article => 'اعرض المقال كامل';
+
+  @override
+  String get no_url_available => 'لا يوجد رابط';
+
+  @override
+  String get could_not_launch => 'لا يعمل';
 }

@@ -24,5 +24,8 @@
   "search" : "Search",
   "enter_search_term": "Please enter a search term",
   "no_results" : "No Results",
-  "load_more" : "Load More"
+  "load_more" : "Load More",
+  "view_full_article" : "View Full Article",
+  "no_url_available" : "No URL Available",
+  "could_not_launch" : "Could Not Launch"
 }

@@ -24,6 +24,8 @@
   "search" : "بحث",
   "enter_search_term": "من فضلك أدخل كلمة للبحث",
   "no_results" : "لا توجد نتائج",
-  "load_more" : "اظهر المزيد"
-
+  "load_more" : "اظهر المزيد",
+  "view_full_article" : "اعرض المقال كامل",
+  "no_url_available" : "لا يوجد رابط",
+  "could_not_launch" : "لا يعمل"
 }
