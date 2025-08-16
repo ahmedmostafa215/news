@@ -23,5 +23,6 @@
   "health" : "Health",
   "search" : "Search",
   "enter_search_term": "Please enter a search term",
-  "no_results" : "No Results"
+  "no_results" : "No Results",
+  "load_more" : "Load More"
 }

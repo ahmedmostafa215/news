@@ -7,86 +7,118 @@ import 'package:news/ui/home/category_details/news/news_item.dart';
 import 'package:news/utils/app_colors.dart';
 
 class NewsWidget extends StatefulWidget {
-  Source source;
-  NewsWidget({super.key, required this.source});
+  final Source source;
+  const NewsWidget({super.key, required this.source});
 
   @override
   State<NewsWidget> createState() => _NewsWidgetState();
 }
 
 class _NewsWidgetState extends State<NewsWidget> {
+  List<News> articles = [];
+  int page = 1;
+  bool loading = false;
+  bool hasMore = true; // عشان نعرف لو لسه فيه أخبار ولا خلصت
+
+  Future<void> fetchNews({bool refresh = false}) async {
+    if (loading) return;
+
+    setState(() => loading = true);
+
+    try {
+      if (refresh) {
+        page = 1;
+        articles.clear();
+        hasMore = true;
+      }
+
+      final response = await ApiManager.getNewsBySourceId(
+        sourceId: widget.source.id,
+        page: page,
+        pageSize: 20,
+      );
+
+      if (response.articles?.isEmpty ?? true) {
+        hasMore = false;
+      } else {
+        articles.addAll(response.articles ?? []);
+        page++;
+      }
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(AppLocalizations.of(context)!.something_went_wrong)),
+      );
+    }
+
+    setState(() => loading = false);
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    fetchNews();
+  }
+
   @override
   Widget build(BuildContext context) {
-    var height = MediaQuery.of(context).size.height;
-    var width = MediaQuery.of(context).size.width;
+    if (articles.isEmpty && loading) {
+      return Center(
+        child: CircularProgressIndicator(
+          color: Theme.of(context).indicatorColor,
+        ),
+      );
+    }
 
-    return FutureBuilder<NewsResponse?>(
-      future: ApiManager.getNewsBySourceId(widget.source.id?? ''),
-      builder: (context, snapshot){
-        //todo : loading
-        if(snapshot.connectionState == ConnectionState.waiting){
-          return Center(
-            child: CircularProgressIndicator(
-              color: Theme.of(context).indicatorColor,
-            ),
-          );
-        }
-        //todo : client error
-        else if (snapshot.hasError){
-          return Center(
-            child: Column(
-              children: [
-                Text(AppLocalizations.of(context)!.something_went_wrong,
-                  style: Theme.of(context).textTheme.labelMedium,),
-                ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: AppColors.greyColor,
-                    ),
-                    onPressed: () {
-                      ApiManager.getNewsBySourceId(widget.source.id??'');
-                      setState(() {
+    if (articles.isEmpty) {
+      return Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(AppLocalizations.of(context)!.something_went_wrong,
+                style: Theme.of(context).textTheme.labelMedium),
+            ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                backgroundColor: AppColors.greyColor,
+              ),
+              onPressed: () => fetchNews(refresh: true),
+              child: Text(
+                AppLocalizations.of(context)!.try_again,
+                style: Theme.of(context).textTheme.labelSmall,
+              ),
+            )
+          ],
+        ),
+      );
+    }
 
-                      });
-                    },
-                    child: Text(AppLocalizations.of(context)!.try_again,
-                      style: Theme.of(context).textTheme.labelSmall,))
-              ],
-            ),
-          );
-        }
-        //todo : server => response => success , error
-        //todo : server error
-        if (snapshot.data?.status != 'ok'){
-          return Center(
-            child: Column(
-              children: [
-                Text(snapshot.data!.message!,
-                  style: Theme.of(context).textTheme.labelMedium,),
-                ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: AppColors.greyColor,
-                    ),
-                    onPressed: () {
-                      ApiManager.getNewsBySourceId(widget.source.id??'');
-                      setState(() {
-
-                      });
-                    },
-                    child: Text(AppLocalizations.of(context)!.try_again,
-                      style: Theme.of(context).textTheme.labelMedium,))
-              ],
-            ),
-          );
-        }
-        //todo : server success
-        var newsList = snapshot.data?.articles??[];
-        return ListView.builder(
-            itemBuilder: (context, index) {
-              return NewsItem(news: newsList[index],);
-            },
-            itemCount: newsList.length);
-      },
+    return RefreshIndicator(
+      onRefresh: () => fetchNews(refresh: true),
+      child: ListView.builder(
+        itemCount: articles.length + 1,
+        itemBuilder: (context, index) {
+          if (index < articles.length) {
+            return NewsItem(news: articles[index]);
+          } else {
+            if (!hasMore) {
+              return const SizedBox.shrink();
+            }
+            return Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: AppColors.transparentColor
+                ),
+                onPressed: loading ? null : fetchNews,
+                child: loading
+                    ? const CircularProgressIndicator()
+                    : Text(AppLocalizations.of(context)!.load_more,
+                    style: Theme.of(context).textTheme.labelLarge,
+                ),
+              ),
+            );
+          }
+        },
+      ),
     );
-
   }
 }

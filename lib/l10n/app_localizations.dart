@@ -247,6 +247,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'No Results'**
   String get no_results;
+
+  /// No description provided for @load_more.
+  ///
+  /// In en, this message translates to:
+  /// **'Load More'**
+  String get load_more;
 }
 
 class _AppLocalizationsDelegate

@@ -9,7 +9,10 @@ class SourceName extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Text(source.name?? "",
-      style: isSelected ? Theme.of(context).textTheme.labelLarge : Theme.of(context).textTheme.labelMedium,
+      style:
+            isSelected ? Theme.of(context).textTheme.labelLarge
+            :
+            Theme.of(context).textTheme.labelMedium,
     );
   }
 }

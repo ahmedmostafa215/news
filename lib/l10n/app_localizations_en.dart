@@ -82,4 +82,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get no_results => 'No Results';
+
+  @override
+  String get load_more => 'Load More';
 }

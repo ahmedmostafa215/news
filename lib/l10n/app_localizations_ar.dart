@@ -82,4 +82,7 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get no_results => 'لا توجد نتائج';
+
+  @override
+  String get load_more => 'اظهر المزيد';
 }

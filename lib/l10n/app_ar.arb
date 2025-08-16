@@ -23,5 +23,7 @@
   "health" : "الصحة",
   "search" : "بحث",
   "enter_search_term": "من فضلك أدخل كلمة للبحث",
-  "no_results" : "لا توجد نتائج"
+  "no_results" : "لا توجد نتائج",
+  "load_more" : "اظهر المزيد"
+
 }
